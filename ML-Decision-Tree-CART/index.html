@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>CART算法的实现 | CHAI' blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">CART算法的实现</h1><a id="logo" href="/.">CHAI' blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">CART算法的实现</h1><div class="post-meta">Dec 13, 2016<span> | </span><span class="category"><a href="/categories/Machine-Learning/">Machine Learning</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CART算法"><span class="toc-number">1.</span> <span class="toc-text">CART算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回归树"><span class="toc-number">1.1.</span> <span class="toc-text">回归树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类树的生成"><span class="toc-number">1.2.</span> <span class="toc-text">分类树的生成</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 id="CART算法"><a href="#CART算法" class="headerlink" title="CART算法"></a>CART算法</h2><p>在数据挖掘中，决策树主要有两种类型。分类树的输出是样本的类标，回归树的输出是一个实数。分类与回归树(classification and regression tree, CART)，由特征选择、树的生成以及剪枝组成，既可以用于分类也可以用于回归。对于$$D={X_{1},X_{2},…,X_{m},Y}$$，当Y是连续的数量值时，称为回归树；当Y是离散值时，称为分类树。</p>
+<p>CART假设决策树是二叉树，内部结点特征取值为“True”或“False”，左树枝为True，右树枝为False。这样的决策树等价于递归地二分每个特征，将输入空间划分为有限个单元（或者说区域），并在单元上预测。</p>
+<p>CART与ID3的区别：CART中选择变量的不纯性度量是Gini指数；如果目标变量是标称的，并且具备2个以上类别，可以将目标类别合并成两个超类别；如果目标变量是连续的，则CART算法找出一组基于树的回归方程来预测目标变量。</p>
+<h3 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h3><p>假设X与Y分别为输入和输出变量，且Y是连续变量，给定训练数据集$$D={(x_{1},y_{1}),(x_{2},y_{2}),…,(x_{N},y_{N})}$$。假设已将输入空间划分为M个单元$$R_{1},R_{2},…,R_{M}$$，并且在每个单元$$R_{m}$$上都以一个固定的输出值$$c_{m}$$，于是回归树模型可以表示为</p>
+<p>$$f(x)=\sum_{m=1}^{M} c_{m}I(x \in R_{m})$$</p>
+<p>当输入空间划分确定后，可以用平方误差$$\sum \limits_{x_{i} \in R_{m}} (y_{i}-f(x_{i}))^{2}$$来表示回归树对训练数据的预测误差。用平方误差最小的准则求解每个单元上的最优输出值。容易得到，单元$$R_{m}$$上的$$c_{m}$$的最优值</p>
+<p>$$\hat{c}<em>{m}=average(y</em>{i}|x_{i}\in R_{m})$$</p>
+<p>这里采用启发式的方法对输入空间进行划分，首先选择第j个变量$$x^{(j)}$$和它取的值s，作为切分变量和切分点，并定义两个区域：<br>$$R_{1}(j,s)={x|x^{(j)} \leq s}$$<br>和<br>$$R_2(j,s)={x|x^{(j)}&gt;s}$$</p>
+<p>然后寻找最优切分变量j和最优切分点s。具体地，求解</p>
+<p>$$\min\limits_{j,s} [\min \limits_{c_{1}} \sum \limits_{x_{i} \in R_{1}(j,s)} (y_{i}-c_{1})^2 + \min \limits_{c_{2}} \sum \limits_{x_{i} \in R_{2}(j,s)} (y_{i}-c_{2})^2]$$</p>
+<p>对固定输入变量j可以找到最优切分点s。</p>
+<p>$$\hat{c}<em>{1}=average(y</em>{i}|x_{i} \in R_{1}(j,s))$$<br>和<br>$$\hat{c}<em>{2}=average(y</em>{i}|x_{i} \in R_{2}(j,s))$$</p>
+<p>遍历所有的输入变量，找到最优的切分变量j，构成一个对(j,s)。依次将输入空间划分为两个区域，对每个区域重复上述过程。这样的回归树称为最小二乘回归树。</p>
+<p>算法：</p>
+<p>输入：训练数据集D</p>
+<p>输出：回归树$$f(x)$$</p>
+<ol>
+<li>选择最优切分变量j和切分点s，求解$$\min\limits_{j,s} [\min \limits_{c_{1}} \sum \limits_{x_{i} \in R_{1}(j,s)} (y_{i}-c_{1})^2 + \min \limits_{c_{2}} \sum \limits_{x_{i} \in R_{2}(j,s)} (y_{i}-c_{2})^2]$$，遍历变量j，对固定的切分变量j扫描切分点s，选择使上式达到最小值的对(j,s)</li>
+<li>用选择的对(j,s)划分区域并决定相应的输出值：</li>
+</ol>
+<p>$$R_{1}(j,s)={x|x^{(j)} \leq s},\ R_{2}(j,s)={x|x^{(j)} &gt; s}$$</p>
+<p>$$\hat{c}<em>{m}=\frac{1}{N</em>{m}} \sum \limits_{x_{i} \in R_{m}(j,s)} y_{i},\ x \in R_{m},\ m=1,2$$</p>
+<ol start="3">
+<li>递归地对2个子区域调用步骤1和2，直到满足停止条件</li>
+<li>将输入空间划分为M个区域$$R_{1},R_{2},…,R_{M}$$，生成决策树</li>
+</ol>
+<p>$$f(x)=\sum_{m=1}^{M} \hat{c}<em>{m} I(x \in R</em>{m})$$</p>
+<h3 id="分类树的生成"><a href="#分类树的生成" class="headerlink" title="分类树的生成"></a>分类树的生成</h3><p>基尼指数：对于样本集合D，假设有k类，基尼指数为：</p>
+<p>$$Gini(D)=1-\sum_{k=1}^{K}(\frac{|C_{k}|}{|D|})^2$$</p>
+<p>$$C_{k}$$是D中第k类的样本子集，K是类的个数。</p>
+<p>如果样本集合D根据特征A是否取某一可能值a被分割成$$D_{1}$$和$$D_{2}$$两部分，即</p>
+<p>$$D_{1}={(x,y) \in D| A(x)=a},\ D_{2}=D-D_{1}$$</p>
+<p>则在特征A的条件下，集合D的基尼指数定义为</p>
+<p>$$Gini(D,A)=\frac{|D_{1}|}{|D|} Gini(D_{1}) + \frac{|D_{2}|}{|D|} Gini(D_{2})$$</p>
+<p>下图显示了二分类问题中基尼指数、熵之半和分类误差率的关系，可以看出基尼指数、熵之半的曲线很接近，都可以近似地代表分类误差率。</p>
+<p><img src="CART_1.png" alt="CART_1"></p>
+<p>下面介绍CART分类树的算法：</p>
+<p>输入：训练数据集D<br>输出：CART决策树</p>
+<ol>
+<li>根据训练数据集D，计算现有的特征对该数据集的gini系数。对于每一个特征A，取该特征的<strong>某一个</strong>值a，根据特征A的值是否为a，将D分割成$$D_{True}$$和$$D_{False}$$两个部分，并计算A=a是的分割gini系数</li>
+<li>在所有可能选择的特征A和所有可能的切分点a中，选择基尼系数最小的特征及其切分点作为最优特征和最优切分点。并生成两个子结点，将$$D_{True}$$和$$D_{False}$$分配给两个子结点。</li>
+<li>对子结点递归调用1和2步，直到满足停止条件</li>
+</ol>
+<p>本文使用和ID3算法相似的停止条件，即D中样本全属于同一类别C或A=∅ OR D中样本在A上取值相同。除了本文的停止方式之外，还可以：(1)计算结点中的样本个数小于某个设定的阈值时，停止；(2)决策树高度达到用户设定的值时，停止；(3)当不纯度函数的变化小于某个规定的阈值，停止</p>
+<p>我有一个感受，CART的关键点不在于gini系数，gini系数只是用来衡量训练集不纯度的一个度量手段，我们完全可以使用ID3算法中的<strong>熵不纯度</strong>替换CART中的<strong>Gini不纯度</strong>。CART的关键在于提出了一种处理连续数据的回归树方法。</p>
+<p>CART分类树的一个例子：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">体温</th>
+<th style="text-align:center">表面覆盖</th>
+<th style="text-align:center">胎生</th>
+<th style="text-align:center">产蛋</th>
+<th style="text-align:center">能飞</th>
+<th style="text-align:center">水生</th>
+<th style="text-align:center">有腿</th>
+<th style="text-align:center">冬眠</th>
+<th style="text-align:center">类标记</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">人</td>
+<td style="text-align:center">恒温</td>
+<td style="text-align:center">毛发</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">哺乳类</td>
+</tr>
+<tr>
+<td style="text-align:center">巨蟒</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">爬行类</td>
+</tr>
+<tr>
+<td style="text-align:center">鲑鱼</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">鱼类</td>
+</tr>
+<tr>
+<td style="text-align:center">鲸</td>
+<td style="text-align:center">恒温</td>
+<td style="text-align:center">毛发</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">哺乳类</td>
+</tr>
+<tr>
+<td style="text-align:center">蛙</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">有时</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">两栖类</td>
+</tr>
+<tr>
+<td style="text-align:center">巨蜥</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">爬行类</td>
+</tr>
+<tr>
+<td style="text-align:center">蝙蝠</td>
+<td style="text-align:center">恒温</td>
+<td style="text-align:center">毛发</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">哺乳类</td>
+</tr>
+<tr>
+<td style="text-align:center">猫</td>
+<td style="text-align:center">恒温</td>
+<td style="text-align:center">皮</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">哺乳类</td>
+</tr>
+<tr>
+<td style="text-align:center">豹纹鲨</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">鱼类</td>
+</tr>
+<tr>
+<td style="text-align:center">海龟</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">有时</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">爬行类</td>
+</tr>
+<tr>
+<td style="text-align:center">豪猪</td>
+<td style="text-align:center">恒温</td>
+<td style="text-align:center">刚毛</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">哺乳类</td>
+</tr>
+<tr>
+<td style="text-align:center">鳗</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">鳞片</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">鱼类</td>
+</tr>
+<tr>
+<td style="text-align:center">蝾螈</td>
+<td style="text-align:center">冷血</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">有时</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">两栖类</td>
+</tr>
+</tbody>
+</table>
+<p>CART分类树的结果为：</p>
+<p><img src="CART_2.png" alt="CART_2"></p>
+<p><img src="CART_3.png" alt="CART_3"></p>
+<p>同时，我们我使用之前的ID3算法对同一个训练集进行训练，产生的结果如下：</p>
+<p><img src="CART_4.png" alt="CART_4"></p>
+<p>由此，我们可以发现ID3算法和CART算法的不同之处。(CART代码在本页最后提供下载)</p>
+<p>下载完整程序： <a href="CART_without_cut.zip">CART算法（未剪枝）源码</a></p>
+</div><div class="tags"><a href="/tags/决策树/">决策树</a></div><div class="post-nav"><a class="pre" href="/2017-1-19-VPS-Aria2/">在VPS上部署Aria2实现离线下载</a><a class="next" href="/ML-Decision-Tree-ID3/">ID3算法的实现</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://chaideblog.github.io"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/BigData/">BigData</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Deep-Learning/">Deep Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Probability-theroy/" style="font-size: 15px;">Probability theroy</a> <a href="/tags/Genetic-Algorithm/" style="font-size: 15px;">Genetic Algorithm</a> <a href="/tags/决策树/" style="font-size: 15px;">决策树</a> <a href="/tags/Python语法/" style="font-size: 15px;">Python语法</a> <a href="/tags/VPS/" style="font-size: 15px;">VPS</a> <a href="/tags/Convex-Optimize/" style="font-size: 15px;">Convex Optimize</a> <a href="/tags/Naive-Bayes/" style="font-size: 15px;">Naive Bayes</a> <a href="/tags/Sublime/" style="font-size: 15px;">Sublime</a> <a href="/tags/Random-Forests/" style="font-size: 15px;">Random Forests</a> <a href="/tags/集成学习/" style="font-size: 15px;">集成学习</a> <a href="/tags/Hadoop/" style="font-size: 15px;">Hadoop</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/FFT/" style="font-size: 15px;">FFT</a> <a href="/tags/Apache/" style="font-size: 15px;">Apache</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/SVM/" style="font-size: 15px;">SVM</a> <a href="/tags/SGD/" style="font-size: 15px;">SGD</a> <a href="/tags/BGD/" style="font-size: 15px;">BGD</a> <a href="/tags/MBGD/" style="font-size: 15px;">MBGD</a> <a href="/tags/SMO/" style="font-size: 15px;">SMO</a> <a href="/tags/标准化/" style="font-size: 15px;">标准化</a> <a href="/tags/回归/" style="font-size: 15px;">回归</a> <a href="/tags/CTR/" style="font-size: 15px;">CTR</a> <a href="/tags/LeetCode/" style="font-size: 15px;">LeetCode</a> <a href="/tags/LightGBM/" style="font-size: 15px;">LightGBM</a> <a href="/tags/RCNN/" style="font-size: 15px;">RCNN</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/Interview/" style="font-size: 15px;">Interview</a> <a href="/tags/LR/" style="font-size: 15px;">LR</a> <a href="/tags/FM-FFM/" style="font-size: 15px;">FM/FFM</a> <a href="/tags/Recommend-System/" style="font-size: 15px;">Recommend System</a> <a href="/tags/Natural-Language-Processing/" style="font-size: 15px;">Natural Language Processing</a> <a href="/tags/Recommendation/" style="font-size: 15px;">Recommendation</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019-5-5-Paper-TEM/">基于决策树的可解释嵌入推荐模型：TEM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-5-4-Transformer/">Transformer理解与Tensorflow代码阅读</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-28-Normalization/">深度学习中各种Normalization</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-22-recommend-system-1/">《推荐系统实战》读书笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-6-toutiao-interview/">字节跳动广告算法团队实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-13-xiaomi-interview/">小米信息流推荐实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-8-sohu-interview/">搜狐推荐算法实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-27-CTR-LR-FM-FFM/">CTR系列（一）：LR、FM/FFM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-21-ms-bing-interview/">微软Bing组算法（Game Over）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-1-8-PriorityQueue/">【转】Java容器源码分析之PriorityQueue</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">CHAI' blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

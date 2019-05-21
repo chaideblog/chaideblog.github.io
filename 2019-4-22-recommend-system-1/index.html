@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>《推荐系统实战》读书笔记（一） | CHAI' blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">《推荐系统实战》读书笔记（一）</h1><a id="logo" href="/.">CHAI' blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">《推荐系统实战》读书笔记（一）</h1><div class="post-meta">Apr 22, 2019<span> | </span><span class="category"><a href="/categories/Machine-Learning/">Machine Learning</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一章-好的推荐系统"><span class="toc-number">1.</span> <span class="toc-text">第一章 好的推荐系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-什么是推荐系统"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 什么是推荐系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-如何评测推荐系统"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 如何评测推荐系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-利用用户行为数据"><span class="toc-number">2.</span> <span class="toc-text">第二章 利用用户行为数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-用户行为数据介绍"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 用户行为数据介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-实验设计和算法评测"><span class="toc-number">2.2.</span> <span class="toc-text">2.3 实验设计和算法评测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-基于邻域的算法"><span class="toc-number">2.3.</span> <span class="toc-text">2.4 基于邻域的算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基于用户的协同过滤算法"><span class="toc-number">2.3.1.</span> <span class="toc-text">基于用户的协同过滤算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基于物品的协同过滤算法"><span class="toc-number">2.3.2.</span> <span class="toc-text">基于物品的协同过滤算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UserCf-vs-ItemCF"><span class="toc-number">2.3.3.</span> <span class="toc-text">UserCf vs ItemCF</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-基于图的模型"><span class="toc-number">2.4.</span> <span class="toc-text">2.6 基于图的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三章-推荐系统冷启动问题"><span class="toc-number">3.</span> <span class="toc-text">第三章 推荐系统冷启动问题</span></a></li></ol></div></div><div class="post-content"><p>本文将介绍《推荐系统实战》一书的前三章：</p>
+<ol>
+<li>好的推荐系统</li>
+<li>利用用户行为数据</li>
+<li>推荐系统冷启动问题</li>
+</ol>
+<h2 id="第一章-好的推荐系统"><a href="#第一章-好的推荐系统" class="headerlink" title="第一章 好的推荐系统"></a>第一章 好的推荐系统</h2><p>该部分主要介绍了为什么我们需要一个推荐系统，以及如何衡量推荐系统的优劣。</p>
+<h3 id="1-1-什么是推荐系统"><a href="#1-1-什么是推荐系统" class="headerlink" title="1.1 什么是推荐系统"></a>1.1 什么是推荐系统</h3><p>当今社会存在海量的数据，一个人可能很难做出筛选。面对这种<strong>信息过载</strong>的问题，就需要一个工具来帮助我们进行筛选和建议，于是<strong>推荐系统</strong>应运而生。</p>
+<p>推荐系统的任务就是联系<strong>用户</strong>和<strong>信息</strong>，一方面帮助用户发现对自己有价值的信息，另一方面让信息能够展现在对它感兴趣的用户面前，实现信息消费者和信息生产者的双赢。</p>
+<p>为了解决信息过载的问题，之前的解决方案是<strong>分类目录</strong>和<strong>搜索引擎</strong>。但是，推荐系统不需要用户提供明确的需求，而是通过分析用户的历史行为给用户的兴趣建模，从而主动给用户推荐信息。</p>
+<p>推荐系统能够更好地发掘长尾信息，有利于个性化推荐。个性化推荐通过分析大量用户行为日志，给不同用户提供不同的个性化页面展示，来提高网站的点击率和转化率。个性化推荐的成功需要两个条件，一是信息过载，二是用户大部分时候没有明确的需求。</p>
+<h3 id="1-2-如何评测推荐系统"><a href="#1-2-如何评测推荐系统" class="headerlink" title="1.2 如何评测推荐系统"></a>1.2 如何评测推荐系统</h3><p>一个好的推荐系统需要综合考虑用户、网站和内容提供商三方的利益，因此制定了一些指标来衡量一个推荐系统。在推荐系统中，主要有3种评测推荐效果的实验方法，即<strong>离线实验</strong>、<strong>用户调查</strong>和<strong>在线实验</strong>。</p>
+<p>评测指标方面主要有<strong>用户满意度（点击率、用户停留时间、转化率）</strong>、<strong>预测准确度（RMSE、MAE、召回、准确）</strong>、<strong>覆盖率（描述一个系统对长尾的发掘能力）</strong>、<strong>多样性（尽量覆盖用户广泛的兴趣）</strong>、<strong>新颖性</strong>、<strong>惊喜度</strong>、<strong>信任度</strong>、<strong>实时性</strong>、<strong>健壮性</strong>。</p>
+<h2 id="第二章-利用用户行为数据"><a href="#第二章-利用用户行为数据" class="headerlink" title="第二章 利用用户行为数据"></a>第二章 利用用户行为数据</h2><p>本章主要介绍了挖掘用户信息的常用模型，包括基于邻域的方法、隐语义模型、基于图的模型。</p>
+<h3 id="2-1-用户行为数据介绍"><a href="#2-1-用户行为数据介绍" class="headerlink" title="2.1 用户行为数据介绍"></a>2.1 用户行为数据介绍</h3><p>用户行为在个性化推荐系统中一般分两种——显性反馈行为和隐性反馈行为。显性反馈行为包括用户明确表示对物品喜好的行为。隐性反馈行为指的是那些不能明确反应用户喜好的行为。</p>
+<p><img src="显性反馈行为vs隐性反馈行为.png" alt="显性反馈行为vs隐性反馈行为"></p>
+<p><img src="显性反馈行为、隐性反馈行为的例子.png" alt="显性反馈行为、隐性反馈行为的例子"></p>
+<h3 id="2-3-实验设计和算法评测"><a href="#2-3-实验设计和算法评测" class="headerlink" title="2.3 实验设计和算法评测"></a>2.3 实验设计和算法评测</h3><ul>
+<li>召回率（Recall）：$$Recall = \frac{\sum_{u} \vert R(u) \cap T(u) \vert}{\sum_{u} \vert T(u) \vert}​$$</li>
+<li>准确率（Precision）：$$Precision = \frac{\sum_{u} \vert R(u) \cap T(u) \vert}{\sum_{u} \vert R(u) \vert}$$</li>
+<li>覆盖率（Coverage）：$$Coverage = \frac{\cup_{u \in U} R(u)}{\vert I \vert}$$</li>
+</ul>
+<h3 id="2-4-基于邻域的算法"><a href="#2-4-基于邻域的算法" class="headerlink" title="2.4 基于邻域的算法"></a>2.4 基于邻域的算法</h3><h4 id="基于用户的协同过滤算法"><a href="#基于用户的协同过滤算法" class="headerlink" title="基于用户的协同过滤算法"></a>基于用户的协同过滤算法</h4><p>算法核心思想：在一个在线推荐系统中，当用户A需要个性化推荐时，可以先找到和他有相似兴趣的其它用户，然后把那些用户喜欢的、而用户A没有听说过的物品推荐给A，这种方法称为基于用户的协同过滤算法。</p>
+<p>可以看出，这个算法主要包括两步：</p>
+<ol>
+<li><p>找到和目标用户兴趣相似的用户集合——计算两个用户的兴趣相似度；</p>
+</li>
+<li><p>找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户——找出物品推荐。</p>
+</li>
+</ol>
+<p>给定用户u和用户v，令$$N(u)$$表示用户$$u$$感兴趣的物品集合，$$N(v)$$表示用户$$v$$感兴趣的物品集合，那么可以通过Jaccard公式或者通过余弦相似度公式计算：</p>
+<p>$$Jaccard: w_{uv} = \frac{\vert N(u) \cap N(v) \vert}{\vert N(u) \cup N(v) \vert}​$$</p>
+<p>$$Cos: w_{uv} =  \frac{\vert N(u) \cap N(v) \vert}{\sqrt{\vert N(u)\vert \vert N(v) \vert}}​$$</p>
+<p>建立相似度矩阵分为两个步骤：</p>
+<ol>
+<li>建立物品到用户的倒查表$$T$$，表示该物品被哪些用户产生过行为；</li>
+<li>根据倒查表T，建立用户相似度矩阵$$W​$$：在$$T​$$中，对于每一个物品$$i​$$，设其对应的用户为$$(j,k)​$$，在$$W​$$中，更新相应的元素值，$$w[j][k]=w[j][k]+1​$$，以此类推，扫描完倒查表$$T​$$中的所有物品后，就可以得到最终的用户相似度矩阵$$W​$$，这里的$$W​$$是余弦相似度中的分子部分，然后将$$W​$$除以分母可以得到最终的用户兴趣相似度。</li>
+</ol>
+<p>之后，给用户推荐和他兴趣最相似的K个用户喜欢的物品。</p>
+<p>$$p(u, i) = \sum_{v \in S(u, K) \cup N(i)} w_{uv} r_{vi}$$</p>
+<p>其中$$p(u,i)$$表示用户$$u$$对物品$$i$$的感兴趣程度，$$S(u,k)$$表示和用户$$u$$兴趣最接近的$$K$$个用户，$$N(i)$$表示对物品$$i$$有过行为的用户集合，$$w_{uv}$$表示用户$$u$$和用户$$v$$的兴趣相似度，$$r_{vi}$$表示用户$$v$$对物品$$i$$的兴趣。</p>
+<p>我们还可以在此基础上进行改进，改进思想是：两个用户对冷门物品采取过同样的行为更能说明他们兴趣的相似度。</p>
+<p>$$w_{uv} = \frac{\sum_{i \in N(u) \cap N(v)} \frac{1}{\log (1 + \vert N(i) \vert)}}{\sqrt{\vert N(u)\vert \vert N(v) \vert}}$$</p>
+<p><img src="MovieLens数据集中UserCF算法在不同K参数下的性能.png" alt="MovieLens数据集中UserCF算法在不同K参数下的性能"></p>
+<p><img src="两种基础算法在MovieLens数据集下的性能.png" alt="两种基础算法在MovieLens数据集下的性能"></p>
+<h4 id="基于物品的协同过滤算法"><a href="#基于物品的协同过滤算法" class="headerlink" title="基于物品的协同过滤算法"></a>基于物品的协同过滤算法</h4><p>ItemCF算法并不利用物品的内容属性计算物品之间的相似度，它主要通过分析用户的行为记录计算物品之间的相似度。我们可以用下面的公式定义物品的相似度:</p>
+<p>$$w_{ij} = \frac{\vert N(i) \cap N(j) \vert}{\vert N(i) \vert}​$$</p>
+<p>$$w_{ij} = \frac{\vert N(i) \cap N(j) \vert}{\sqrt{\vert N(i) \vert \vert N(j) \vert}}​$$</p>
+<p>分母$$\vert N(i) \vert$$是喜欢物品$$i$$的用户数，而分子$$是同\vert N(i) \cap N(j) \vert$$是喜欢物品$$i$$和物品$$j$$的用户数。因此，上述公式可以理解为喜欢物品$$i$$的用户中有多少比例的用户也喜欢物品$$j$$。</p>
+<p>和UserCF算法类似，用ItemCF算法计算物品相似度时也可以首先建立用户—物品倒排表(即对每个用户建立一个包含他喜欢的物品的列表)，然后对于每个用户，将他物品列表中的物品两两在共现矩阵中加1。</p>
+<p>在得到物品之间的相似度后，ItemCF通过如下公式计算用户$$u$$对一个物品$$j$$的兴趣：</p>
+<p>$$p_{uj} = \sum_{i \in N(u) \cap S(j, K)} w_{ji} r_{ui}$$</p>
+<p>这里$$N(u)​$$是用户喜欢的物品的集合，$$S(j,K)​$$是和物品$$j​$$最相似的$$K​$$个物品的集合，$$w_{ji}​$$是物品$$j​$$和$$i​$$<br>的相似度，$$r_{ui}​$$是用户$$u​$$对物品$$i​$$的兴趣。</p>
+<p>下表列出了在MovieLens数据集上ItemCF算法离线实验的各项性能指标的评测结果。该表包括算法在不同$$K$$值下的性能。</p>
+<p><img src="MovieLens数据集中ItemCF算法离线实验的结果.png" alt="MovieLens数据集中ItemCF算法离线实验的结果"></p>
+<p>根据表中的数据我们可以得出如下结论。 </p>
+<ul>
+<li>精度（准确率和召回率）可以看到ItemCF推荐结果的精度也是不和$$K​$$成正相关或者负相关的，因此选择合适的$$K​$$对获得最高精度是非常重要的。 </li>
+<li>流行度和UserCF不同，参数$$K$$对ItemCF推荐结果流行度的影响也不是完全正相关的。 随着$$K$$的增加，结果流行度会逐渐提高，但当$$K$$增加到一定程度，流行度就不会再有明显变化。 </li>
+<li>覆盖率，$$K$$增加会降低系统的覆盖率。 </li>
+</ul>
+<p>ItemCF同样可以改进，$$w_{ij} = \frac{\sum_{u \in N(i) \cap N(j)} \frac{1}{\log (1 + \vert N(u)) \vert)}}{\sqrt{\vert N(i) \vert \vert N(j) \vert}}​$$</p>
+<h4 id="UserCf-vs-ItemCF"><a href="#UserCf-vs-ItemCF" class="headerlink" title="UserCf vs ItemCF"></a>UserCf vs ItemCF</h4><ul>
+<li>UserCF的推荐结果着重于反映和用户兴趣相似的小群体的热点，而ItemCF的推荐结果着重于维系用户的历史兴趣。</li>
+<li>UserCF可以给用户推荐和他有相似爱好的一群其他用户今天都在看的新闻，这样在抓住热点和时效性的同时，保证了一定程度的个性化。而ItemCF需要维护一张物品相关度的表，如果物品更新很快，那么这张表也需要很快更新，这在技术上很难实现。</li>
+<li>在图书、电子商务和电影网站，物品更新速度不会特别快，一天一次更新物品相似度矩阵对它们来说不会造成太大的损失，是可以接受的。UserCF需要维护一个用户相似度的矩阵，而ItemCF需要维护一个物品相似度矩阵。从存储的角度说，如果用户很多，那么维护用户兴趣相似度矩阵需要很大的空间，同理，如果物品很多，那么维护物品相似度矩阵代价较大。</li>
+</ul>
+<p>###2.5 隐语义模型</p>
+<p>LFM隐语义模型逐渐成为推荐系统领域耳熟能详的名词。其实该算法最早在文本挖掘领域被提出，用于找到文本的隐含语义。相关的名词有LSI、pLSA、LDA和Topic Model。</p>
+<p>LFM通过如下公式计算用户$$u​$$对物品$$i​$$的兴趣：</p>
+<p>$$p(u, i) = r_{ui} = p^T_{u} q_i = \sum_{f=1}^{F} p_{u,k} q_{i,k}​$$</p>
+<p>这个公式中$$p_{u,k}​$$和$$q_{i,k}​$$是模型的参数，其中$$p_{u,k}​$$度量了用户$$u​$$的兴趣和第$$k​$$个隐类的关系，而$$q_{i,k}​$$度量了第$$k​$$个隐类和物品$$i​$$之间的关系。</p>
+<p>推荐系统的用户行为分为显性反馈和隐性反馈。LFM在显性反馈数据(也就是评分数据)上解决评分预测问题并达到了很好的精度。不过本章主要讨论的是隐性反馈数据集，这种数据集的特点是只有正样本(用户喜欢什么物品)，而没有负样本(用户对什么物品不感兴趣)。 那么，在隐性反馈数据集上应用LFM解决TopN推荐的第一个关键问题就是如何给每个用户生成负样本。 一般情况下，对负样本采样遵循以下规则：</p>
+<ul>
+<li>正负样本的平衡；</li>
+<li>负采样要选择那些很热门，但是用户没有行为的物品。</li>
+</ul>
+<p>按照上述的方式采样出了那些热门的、但用户却没有过行为的物品。经过采样，可以得到一个用户-物品集$$K = {(u, i)}$$，其中如果$$(u, i)$$是正样本，则有$$r_{ui} = 1$$，否则有$$r_{ui} = 0$$。然后，需要优化如下的损失函数来找到最合适的参数$$p$$和$$q$$：</p>
+<p>$$C = \sum_{(u,i) \in K} (r_{ui} - \hat{r}<em>{ui})^2 = \sum</em>{(u,i) \in K} (r_{ui} - \sum_{k=1}^{K} p_{u,k} q_{i,k})^2 + \lambda {\vert \vert p_u \vert \vert}^2 + \lambda {\vert \vert q_i \vert \vert}^2​$$</p>
+<p>$$\lambda {\vert \vert p_u \vert \vert}^2 + \lambda {\vert \vert q_i \vert \vert}^2$$是用来防止过拟合的正则化项，$$\lambda$$可以通过实验获得。要最小化上面的损失函数，可以利用SGD。</p>
+<p>其次，我们通过实验对比了LFM在TopN推荐中的性能。在LFM中，重要的参数有4个：</p>
+<ul>
+<li>隐特征的个数$$F$$；</li>
+<li>学习速率$$\alpha$$；</li>
+<li>正则化参数$$\lambda$$； </li>
+<li>负样本/正样本比例ratio。 </li>
+</ul>
+<h3 id="2-6-基于图的模型"><a href="#2-6-基于图的模型" class="headerlink" title="2.6 基于图的模型"></a>2.6 基于图的模型</h3><p>略</p>
+<h2 id="第三章-推荐系统冷启动问题"><a href="#第三章-推荐系统冷启动问题" class="headerlink" title="第三章 推荐系统冷启动问题"></a>第三章 推荐系统冷启动问题</h2><p>推荐系统需要根据用户的历史行为和兴趣预测用户未来的行为和兴趣，因此大量的用户行为数据就成为推荐系统的重要组成部分和先决条件。 因此，当没有充足的数据的时候，<strong>冷启动</strong>问题就至关重要了。</p>
+<p>冷启动问题主要分为3类：</p>
+<ul>
+<li>用户冷启动：主要解决如何给新用户做个性化推荐；</li>
+<li>物品冷启动：如何将新的物品推荐给用户；</li>
+<li>系统冷启动：在一个新的网站上设计个性化推荐系统。</li>
+</ul>
+<p>针对上述的冷启动问题，可以参考如下解决方案：</p>
+<ol>
+<li><p>用户冷启动：</p>
+<ul>
+<li>提供<strong>非个性化</strong>的推荐：例如热门排行榜；</li>
+<li>利用用户注册提供的年龄、性别等数据进行<strong>粗粒度</strong>的推荐；</li>
+<li>利用用户的<strong>社交账号</strong>登陆，导入用户的社交好友信息，推荐其好友喜欢的商品；</li>
+<li>在用户登陆时对一些物品做反馈，收集用户的兴趣，然后推荐类型商品。</li>
+</ul>
+</li>
+<li><p>物品冷启动：</p>
+<ul>
+<li>对于新加入的商品，可以利用内容信息，推荐给喜欢过相似商品的用户；</li>
+<li>引入专家知识。</li>
+</ul>
+</li>
+<li><p>系统冷启动：</p>
+<ul>
+<li>综合上述两种方案。</li>
+</ul>
+</li>
+</ol>
+</div><div class="tags"><a href="/tags/Recommend-System/">Recommend System</a></div><div class="post-nav"><a class="pre" href="/2019-4-28-Normalization/">深度学习中各种Normalization</a><a class="next" href="/2019-4-6-toutiao-interview/">字节跳动广告算法团队实习面试经历（Offer）</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://chaideblog.github.io"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/BigData/">BigData</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Deep-Learning/">Deep Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Probability-theroy/" style="font-size: 15px;">Probability theroy</a> <a href="/tags/Genetic-Algorithm/" style="font-size: 15px;">Genetic Algorithm</a> <a href="/tags/决策树/" style="font-size: 15px;">决策树</a> <a href="/tags/Python语法/" style="font-size: 15px;">Python语法</a> <a href="/tags/VPS/" style="font-size: 15px;">VPS</a> <a href="/tags/Convex-Optimize/" style="font-size: 15px;">Convex Optimize</a> <a href="/tags/Naive-Bayes/" style="font-size: 15px;">Naive Bayes</a> <a href="/tags/Sublime/" style="font-size: 15px;">Sublime</a> <a href="/tags/Random-Forests/" style="font-size: 15px;">Random Forests</a> <a href="/tags/集成学习/" style="font-size: 15px;">集成学习</a> <a href="/tags/Hadoop/" style="font-size: 15px;">Hadoop</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/FFT/" style="font-size: 15px;">FFT</a> <a href="/tags/Apache/" style="font-size: 15px;">Apache</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/SVM/" style="font-size: 15px;">SVM</a> <a href="/tags/SGD/" style="font-size: 15px;">SGD</a> <a href="/tags/BGD/" style="font-size: 15px;">BGD</a> <a href="/tags/MBGD/" style="font-size: 15px;">MBGD</a> <a href="/tags/SMO/" style="font-size: 15px;">SMO</a> <a href="/tags/标准化/" style="font-size: 15px;">标准化</a> <a href="/tags/回归/" style="font-size: 15px;">回归</a> <a href="/tags/CTR/" style="font-size: 15px;">CTR</a> <a href="/tags/LeetCode/" style="font-size: 15px;">LeetCode</a> <a href="/tags/LightGBM/" style="font-size: 15px;">LightGBM</a> <a href="/tags/RCNN/" style="font-size: 15px;">RCNN</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/Interview/" style="font-size: 15px;">Interview</a> <a href="/tags/LR/" style="font-size: 15px;">LR</a> <a href="/tags/FM-FFM/" style="font-size: 15px;">FM/FFM</a> <a href="/tags/Recommend-System/" style="font-size: 15px;">Recommend System</a> <a href="/tags/Natural-Language-Processing/" style="font-size: 15px;">Natural Language Processing</a> <a href="/tags/Recommendation/" style="font-size: 15px;">Recommendation</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019-5-5-Paper-TEM/">基于决策树的可解释嵌入推荐模型：TEM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-5-4-Transformer/">Transformer理解与Tensorflow代码阅读</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-28-Normalization/">深度学习中各种Normalization</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-22-recommend-system-1/">《推荐系统实战》读书笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-6-toutiao-interview/">字节跳动广告算法团队实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-13-xiaomi-interview/">小米信息流推荐实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-8-sohu-interview/">搜狐推荐算法实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-27-CTR-LR-FM-FFM/">CTR系列（一）：LR、FM/FFM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-21-ms-bing-interview/">微软Bing组算法（Game Over）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-1-8-PriorityQueue/">【转】Java容器源码分析之PriorityQueue</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">CHAI' blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

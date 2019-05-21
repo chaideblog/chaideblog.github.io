@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>决策树 | CHAI' blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">决策树</h1><a id="logo" href="/.">CHAI' blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">决策树</h1><div class="post-meta">Dec 4, 2016<span> | </span><span class="category"><a href="/categories/Machine-Learning/">Machine Learning</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#浅谈决策树在数据挖掘中的应用"><span class="toc-number">1.</span> <span class="toc-text">浅谈决策树在数据挖掘中的应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建树过程"><span class="toc-number">2.</span> <span class="toc-text">建树过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念学习系统-CLS"><span class="toc-number">2.1.</span> <span class="toc-text">概念学习系统(CLS)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#迭代分类器-ID3"><span class="toc-number">2.2.</span> <span class="toc-text">迭代分类器(ID3)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACLS：ID3-CLS"><span class="toc-number">2.3.</span> <span class="toc-text">ACLS：ID3+CLS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CART"><span class="toc-number">2.4.</span> <span class="toc-text">CART</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RELIEF"><span class="toc-number">2.5.</span> <span class="toc-text">RELIEF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C4-5"><span class="toc-number">2.6.</span> <span class="toc-text">C4.5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#信息增益率"><span class="toc-number">2.6.1.</span> <span class="toc-text">信息增益率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺失值处理"><span class="toc-number">2.6.2.</span> <span class="toc-text">缺失值处理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SLIQ"><span class="toc-number">2.7.</span> <span class="toc-text">SLIQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPRINT"><span class="toc-number">2.8.</span> <span class="toc-text">SPRINT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PUBLIC"><span class="toc-number">2.9.</span> <span class="toc-text">PUBLIC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#雨林分类法"><span class="toc-number">2.10.</span> <span class="toc-text">雨林分类法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EC4-5"><span class="toc-number">2.11.</span> <span class="toc-text">EC4.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#软决策树"><span class="toc-number">2.12.</span> <span class="toc-text">软决策树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多变量决策树"><span class="toc-number">2.13.</span> <span class="toc-text">多变量决策树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#剪枝处理"><span class="toc-number">3.</span> <span class="toc-text">剪枝处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#预剪枝"><span class="toc-number">3.1.</span> <span class="toc-text">预剪枝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后剪枝"><span class="toc-number">3.2.</span> <span class="toc-text">后剪枝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#REP方法"><span class="toc-number">3.2.1.</span> <span class="toc-text">REP方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PEP方法"><span class="toc-number">3.2.2.</span> <span class="toc-text">PEP方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MEP方法"><span class="toc-number">3.2.3.</span> <span class="toc-text">MEP方法</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h2 id="浅谈决策树在数据挖掘中的应用"><a href="#浅谈决策树在数据挖掘中的应用" class="headerlink" title="浅谈决策树在数据挖掘中的应用"></a>浅谈决策树在数据挖掘中的应用</h2><p>数据挖掘(KDD)可以产生五种基本类型的信息：(1)关联信息，若干个事情相关联的信息；(2)聚类信息，对数据进行聚类；(3)分类信息，进行分类的特征描述；(4)偏差信息，反应异常情况；(5)预测信息。</p>
+<p>数据挖掘中用于分类的算法很多，如决策树、贝叶斯分类、规则推理、遗传算法和神经网络。其中决策树的应用广泛，原因是：(1)决策树算法的复杂度小，速度快；(2)抗噪声能力强；(3)可伸缩性强，即可用于小数据集，也可用于海量数据集。</p>
+<h2 id="建树过程"><a href="#建树过程" class="headerlink" title="建树过程"></a>建树过程</h2><p>决策树算法的研究方向：(1)提高效率；(2)适应多数据类型、容噪；(3)可扩展性；(4)与其他技术相结合，如神经网络、模糊集理论、遗传算法。</p>
+<h3 id="概念学习系统-CLS"><a href="#概念学习系统-CLS" class="headerlink" title="概念学习系统(CLS)"></a>概念学习系统(CLS)</h3><p>CLS的描述如下：</p>
+<ol>
+<li>生成一颗空决策树和一张训练样本属性表；</li>
+<li>if 样本都属于同一类</li>
+<li>&emsp;生成结点T，结束；</li>
+<li>else</li>
+<li>&emsp;根据某种策略，从属性表中选出属性A，并产生结点A</li>
+<li>&emsp;假定A的取值为${v_{1},v_{2},…,v_{m}}$，根据A的取值，将T分为M个子集${T_{1},T_{2},…,T_{m}}$；</li>
+<li>&emsp;从训练样本属性表中删除属性A；</li>
+<li>转步骤2，递归调用。</li>
+</ol>
+<h3 id="迭代分类器-ID3"><a href="#迭代分类器-ID3" class="headerlink" title="迭代分类器(ID3)"></a>迭代分类器(ID3)</h3><p>ID3算法是决策树算法的代表。它采用分治策略，在决策树各级结点选择属性时，采用信息增益作为标准。</p>
+<p>一般的，一棵决策树包含一个根结点、若干个内部结点和若干个叶结点；叶结点对于<strong>决策</strong>结果，其他每个结点对应于一个<strong>属性</strong>测试；每个结点包含的样本集合根据属性测试的结果被划分到子结点中；根结点包含样本全集。从根结点到每个叶结点的<strong>路径</strong>对应了一个<strong>判定测试序列</strong>。</p>
+<p>ID3基本算法：</p>
+<p>输入：训练集$D={(x_{1},y_{1}),(x_{2},y_{2}),…,(x_{m},y_{m})}$；属性集：$A={a_{1},a_{2},…,a_{d}}$。</p>
+<p>过程：函数ID3(D,A)</p>
+<ol>
+<li>生成结点node；</li>
+<li>if D中样本全属于同一类别C then</li>
+<li>&emsp;将node标记为C类叶结点；return</li>
+<li>end if</li>
+<li>if A=∅ OR D中样本在A上取值相同 then</li>
+<li>&emsp;将node标记为叶结点，其类别标记为D中样本数最多的类；return</li>
+<li>end if</li>
+<li>从A中选择最优划分属性$$a_{*}$$</li>
+<li>for $$a_{<em>}$$的每一个值$$a^{v}_{</em>}$$do</li>
+<li>&emsp;为node生成一个分支；令$$D_{v}$$表示D中在$$a_{<em>}$$上取值为$$a^{v}_{</em>}$$的样本子集；</li>
+<li>&emsp;if $$D_{v}$$为空 then</li>
+<li>&emsp;&emsp;将分支结点标记为叶结点，其类别标记为D中样本最多的类；return</li>
+<li>&emsp;else</li>
+<li>&emsp;以$$ID3(D_{v},A - {a_{*}}$$为分支结点</li>
+<li>&emsp;end if</li>
+<li>end for</li>
+</ol>
+<p>输出：以node为根结点的一颗决策树</p>
+<p><strong>笔记：类别C指的是$y_{i}$</strong></p>
+<p>显然，有三种情况会导致递归返回：</p>
+<ol>
+<li>当前结点包含的样本全属于同一类别，无需划分；</li>
+<li>当前属性集为空，或所有样本在所有属性上取值相同，无法划分；</li>
+<li>当前结点包含的样本集合为空，不能划分。</li>
+</ol>
+<p>第2种情况，我们将当前结点标记为叶结点，并将其类别设定为该结点所含样本最多的类别；第3种情况，同样将当前结点标记为叶结点，但将其类别设定为其父结点所含样本最多的类别。决策树算法最关键的是第8行，即如何选择最优划分属性。我们一般希望决策树的分支结点所包含的样本属于同一类别，即结点的“纯度”越来越高。</p>
+<p><strong>信息熵</strong>是度量样本集合纯度最常用的一种指标。假设样本集合D中第k类样本的比例为$p_{k}(k=1,2,…,\mid y \mid)$，则D的信息熵定义为</p>
+<p>$$Ent(D)=-\sum_{k=1}^{\mid y \mid} p_{k}log_{2}p_{k} \tag{1}$$</p>
+<p>$Ent(D)$的值越小，则D的<strong>纯度</strong>越高。</p>
+<p>假设离散属性a有V个可能的取值${a^{1},a^{2},…,a^{V}}$，若使用a对样本集合D进行划分，产生V个分支结点，其中第v个分支结点包含D中所有属性上取值为$a^{v}$的样本，记为$D^{v}$。给分支结点赋权重$\frac{\mid D^{v} \mid}{\mid D \mid}$，可以计算出用属性a对样本集D进行划分所得的<strong>信息增益</strong>。</p>
+<p>$$Gain(D,a)=Ent(D)-\sum^{V}_{v=1} \frac{\mid D^{v} \mid}{\mid D \mid} Ent(D^{v}) \tag{2}$$</p>
+<p>一般，信息增益越大，意味着使用属性a来进行划分得到的<strong>纯度提升</strong>越大。因此，我们选择属性$a_{ * }=\arg\ \max \limits_{a \in A} Gain(D,a)$。著名的ID3算法就是通过信息增益来选择划分属性的。</p>
+<h3 id="ACLS：ID3-CLS"><a href="#ACLS：ID3-CLS" class="headerlink" title="ACLS：ID3+CLS"></a>ACLS：ID3+CLS</h3><p>主要改进：运行属性取任意的整数值，极大的扩展了决策树算法的应用范围，使决策树可以处理一些比较复杂的任务，比如图像处理。</p>
+<h3 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h3><p>采用基尼系数作为选择属性的依据，最终生成二叉树。再利用重采样技术进行误差估计和基于最小代价复杂性的树剪枝。</p>
+<p>由于生成决策树的训练集一般都存在噪声数据，噪声数据会造成决策树过于复杂，决策树剪枝方法的出现极大改善了性能。剪枝方法有：最小错误率剪枝(MEP)、临界值剪枝(CVP)、减少错误剪枝(REP)。</p>
+<p>CART决策树通过<strong>基尼系数</strong>来选择划分属性，数据Ｄ的基尼值为：</p>
+<p>$$Gini(D)=\sum^{\mid y \mid}<em>{k=1}\sum</em>{k^{‘}\neq k} p_{k}p_{k^{‘}}=1-\sum^{\mid y \mid}<em>{k=1}p^{2}</em>{k} \tag{3}$$</p>
+<p>属性a的基尼指数定义为</p>
+<p>$$Gini_index(D,a)=\sum^{V}_{v=1} \frac{\mid D^{v} \mid}{\mid D \mid}Gini(D^{v}) \tag{4}$$</p>
+<p>于是，我们在属性集合A中，选择$a_{ * }=\arg\ \max \limits_{a \in A} Gini_index(D,a)$。</p>
+<h3 id="RELIEF"><a href="#RELIEF" class="headerlink" title="RELIEF"></a>RELIEF</h3><p>考虑“邻居”实例，把数据集中的局部信息引入到决策树算法中。局部信息的优势在于它能够在其他属性的背景下评估每一个属性，此前的决策树算法都只能单独的评估每一个属性，忽略的属性间的关联。</p>
+<h3 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h3><p>采用信息增益率来选择属性，同时可以处理连续值属性的数据。还可以用于增量式学习，随着数据量的增加动态地调整决策树。</p>
+<h4 id="信息增益率"><a href="#信息增益率" class="headerlink" title="信息增益率"></a>信息增益率</h4><p>信息增益准则对可取值数目较多的属性有偏好，为减少这种偏好带来的不利影响，著名的C4.5决策树算法采用<strong>增益率</strong>来选择最优属性。增益率定义为</p>
+<p>$$Gain_ratio(D,a)=\frac{Gain(D,a)}{IV(a)} \tag{5}$$</p>
+<p>其中，$$IV(a)=-\sum^{V}<em>{v=1} \frac{\mid D^{v} \mid}{\mid D \mid} log</em>{2} \frac{\mid D^{v} \mid}{\mid D \mid}$$称为属性a的<strong>固有值</strong>。属性a的可能取值越多，$IV(a)$越大。<strong>增益率对取值数目较小的属性有偏好。</strong></p>
+<p>对给定样本集D和连续属性a，假定a在D上出现了n个不同的取值，将这些取值从小到大排序，记为${a_{1},a_{2},…,a_{n}}$。基于划分点t可以将D分为子集$D_{t}^{-}$和$D_{t}^{+}$，其中$D_{t}^{-}$包含属性a上不大于t的样本，$D_{t}^{+}$包含属性a上大于t的样本。显然，对于相邻属性$a^{i}$和$a^{i+1}$来说，t在区间$[a^{i},a^{i+1}]$取任意值所产生的划分结果相同。因此对连续属性a，考察包含n-1个元素的划分点集：</p>
+<p>$$T_{a}={\frac{a^{i}+a^{i+1}}{2}|1 \leq i \leq n-1} \tag{6}$$</p>
+<p>信息增益为：</p>
+<p>$$Gain(D,a)=\max \limits_{t \in T_{a}}\ Gain(D,a,t)=\max \limits_{t \in T_{a}}\ Ent(D)-\sum_{\lambda \in { -,+ }} \frac{\mid D^{v} \mid}{\mid D \mid} Ent(D^{\lambda}_{t}) \tag{7}$$</p>
+<p>选择出最大的信息增益点后，找出对应的划分点。</p>
+<h4 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h4><p>利用有缺失属性值的训练样例来学习，需要解决两个问题：（1）如何在属性值缺失的情况下进行划分属性选择？（2）给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</p>
+<p>给定训练集D和属性a，令$\tilde{D}$表示D在属性a上没有缺失值的样本子集。对问题(1)，我们可以根据$\tilde{D}$来判断属性a的优劣。</p>
+<p>假定属性a有V个可取值$${a^{1},a^{2},…,a^{V}}$$，令$$\tilde{D}^{v}$$表示$$\tilde{D}$$中属性a上取值为$$a^{v}$$的样本子集，$$\tilde{D}<em>{k}$$表示$$\tilde{D}$$中属于第k类$$(k=1,2,…,\mid y \mid)$$的样本子集。假定我们为每个样本x赋予一个权重$$\omega</em>{x}$$，并定义</p>
+<p>$$\rho=\frac{\sum_{x \in \tilde{D}} \omega_{x}}{\sum_{x \in D} \omega_{x}} \tag{8}$$</p>
+<p>$$\tilde{p}<em>{k}=\frac{\sum</em>{x \in \tilde{D}<em>{k}} \omega</em>{x}}{\sum_{x \in \tilde{D}} \omega_{x}}\ \ (1 \leq k \leq \mid y \mid) \tag{9}$$</p>
+<p>$$\tilde{r}<em>{v}=\frac{\sum</em>{x \in \tilde{D}^{v}} \omega_{x}}{\sum_{x \in \tilde{D}} \omega_{x}}\ \ (1 \leq v \leq V) \tag{10}$$</p>
+<p>因为，$$\sum_{k=1}^{\mid y \mid}\tilde{p}<em>{k}=1$$和$$\sum</em>{v=1}^{V}\tilde{r}_{v}=1$$；可知：</p>
+<p>$$Gain(D,a)=\rho \times Gain(\tilde{D},a)=\rho \times \bigg(Ent(\tilde{D})-\sum_{v=1}^{V} Ent(\tilde{D}^v)\bigg) \tag{11}$$</p>
+<p>$$Ent(\tilde{D})=-\sum_{k=1}^{\mid y \mid} \tilde{p}<em>{k}log</em>{2}\tilde{p}_{k} \tag{12}$$</p>
+<p>对于问题(2)，若样本x在划分属性a上的取值已知，则将x划入相应的子结点，且样本权重保持为$$\omega_{x}$$。若样本x在划分属性a上的取值未知，则将x同时划入所有子结点，且样本权重与属性值$$a^{v}$$对应的子结点中调整为$$\tilde{r}<em>{v} \cdot \omega</em>{x}$$。</p>
+<h3 id="SLIQ"><a href="#SLIQ" class="headerlink" title="SLIQ"></a>SLIQ</h3><p>高速、可伸缩、有监督的寻找学习。针对数据量远大于内存的情况，采用了类表、属性表和类直方图三种数据结构，利用换入换出策略处理大数据量。</p>
+<h3 id="SPRINT"><a href="#SPRINT" class="headerlink" title="SPRINT"></a>SPRINT</h3><p>可伸缩、并行、归纳决策树。可以避免内存空间的限制，利用多个并行处理器构造一个稳定的、分类准确率很高的决策树。具有很好的可伸缩性，扩容性。但是结点分割处理过程复杂和储存复杂。</p>
+<h3 id="PUBLIC"><a href="#PUBLIC" class="headerlink" title="PUBLIC"></a>PUBLIC</h3><p>将建树和修剪相结合。主要思想：在决策树建立时，计算每个结点的目标函数值，估计该结点在未来是否会被删除。</p>
+<h3 id="雨林分类法"><a href="#雨林分类法" class="headerlink" title="雨林分类法"></a>雨林分类法</h3><p>针对大数据量，快速构造决策树的分类框架。核心思想：根据每次计算时可用的内存空间，合理调整每次计算的数据集大小，尽量利用内存资源。</p>
+<h3 id="EC4-5"><a href="#EC4-5" class="headerlink" title="EC4.5"></a>EC4.5</h3><p>采用二分搜索代替线性搜索，同时提出多种寻找连续值的局部阈值的策略。</p>
+<h3 id="软决策树"><a href="#软决策树" class="headerlink" title="软决策树"></a>软决策树</h3><p>综合决策树的生成和修剪来决定本身的结构，并利用重修和磨合来提高归纳能力。</p>
+<h3 id="多变量决策树"><a href="#多变量决策树" class="headerlink" title="多变量决策树"></a>多变量决策树</h3><p>决策树所形成的分类边界有一个明显的特点：轴平行，即它的分类边界有若干个与坐标轴平行的分段组成。在学习任务的真实分类边界复杂时，决策树会十分复杂，时间开销会很大。</p>
+<p>多变量决策树可以大大简化决策树模型。例如斜划分的多变量决策树中，非叶结点不再是针对有个属性，而是对属性的线性组合，形成一个形如$$\sum_{i=1}^{d} \omega_{i}a_{i}=t$$的线性分类器。</p>
+<h2 id="剪枝处理"><a href="#剪枝处理" class="headerlink" title="剪枝处理"></a>剪枝处理</h2><p>剪枝是决策树学习算法对付<strong>过拟合</strong>的主要手段。决策树剪枝的基本策略有<strong>预剪枝</strong>和<strong>后剪枝</strong>。</p>
+<p>预剪枝是在决策树生成过程中，对每个结点在划分前进行估计，当前结点的划分不能带来决策树泛化性能提升，则停止划分斌将当前结点标记为叶结点。后剪枝是从训练集生成的一颗完整的决策书，自底向上对非叶结点进行考察，若该结点对应的子树替换为叶结点能带来决策树泛化能力的提高，则将该子树替换为叶结点。</p>
+<h3 id="预剪枝"><a href="#预剪枝" class="headerlink" title="预剪枝"></a>预剪枝</h3><p>预剪枝的算法：</p>
+<p>输入：训练集$$D={(x_{1},y_{1}),(x_{2},y_{2}),…,(x_{m},y_{m})}$$；属性集：$$A={a_{1},a_{2},…,a_{d}}$$；验证集：$$T={(x_{1},y_{1}),(x_{2},y_{2}),…,(x_{n},y_{n})}$$。</p>
+<p>过程：函数pre_TreeCut(D,T,A)</p>
+<ol>
+<li>根据信息增益或增益率，选择属性$$a_{*}$$</li>
+<li>if 划分后验证集精度提升 then</li>
+<li>&emsp;可以划分；对该结点调用$$pre_TreeCut(D,T,A - { a_{*} })$$</li>
+<li>else</li>
+<li>&emsp;将该结点定义为叶结点；return</li>
+<li>end if</li>
+</ol>
+<p>预剪枝基于<strong>贪心</strong>本质禁止这些分支展开，给预剪枝决策树带来了<strong>欠拟合</strong>的风险。预剪枝的缺点是不能处理数量较小的特殊情况实例；还有视野效果问题，就是在相同的标准下，当前的扩展不能满足要求，但进一步的扩展可以满足要求。</p>
+<h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>一般，后剪枝决策树的<strong>欠拟合</strong>风险很小，泛化性能优于预剪枝决策树；但是后剪枝的<strong>训练时间</strong>比预剪枝大得多。</p>
+<h4 id="REP方法"><a href="#REP方法" class="headerlink" title="REP方法"></a>REP方法</h4><p>自底而上，对于树T的每一个子树S，使它成为叶结点，生成一颗新树。在测试集上，新树可以得到一个较小或相等的分类错误，则S删除。</p>
+<p>REP方法是线性的，但偏向过度修剪，当训练数据集较小，不建议使用。</p>
+<h4 id="PEP方法"><a href="#PEP方法" class="headerlink" title="PEP方法"></a>PEP方法</h4><p>为了克服REP方法需要独立剪枝数据集的缺点设计的。</p>
+<p>假设训练集生成树T，叶结点的实例个数为$$n(T)$$，其中错误分类个数$$e(T)$$，误差率$$r(T)=\frac{e(T)}{n(T)}$$。对误差估计增加了连续性校正$$r^{‘}(T)=\frac{e(T)+\frac{1}{2}}{n(T)}$$。设$$T_{s}$$为树T的子树，其叶结点的个数为$$L(T_{s})$$；s是树$$T_{s}$$替换后的叶结点。$$T_{s}$$的分类误差为：</p>
+<p>$$r^{‘}(T_{s})=\frac{\sum \limits{T_{s}} [e(T_{s})+\frac{1}{2}]}{\sum \limits{T_{s}} n(T_{s})} = \frac{\sum e(T_{s})+\frac{L(T_{s})}{2}}{\sum n(T_{s})} \tag{13}$$</p>
+<p>令$$e^{‘}(T_{s})=\sum e(T_{s}) + \frac{L(T_{s})}{2}$$。一般，结点s别叶结点替换的条件是：子树S的误差率大于替换后结点s的误差率。削弱对错误率的限制，修改为：</p>
+<p>$$e^{‘}(s) \leq e^{‘}(T_{s}) + SE[e^{‘}(T_{s})] \tag{14}$$</p>
+<p>其中，$$SE[e^{‘}(T_{s})]$$称为标准误差，定义：</p>
+<p>$$SE[e^{‘}(T_{s})] = \sqrt{\frac{e^{‘}(T_{s})[n(s)-e^{‘}(T_{s})]}{n(s)}} \tag{15}$$</p>
+<p>如果上式成立，则子树$$T_{s}$$应被修剪掉。</p>
+<h4 id="MEP方法"><a href="#MEP方法" class="headerlink" title="MEP方法"></a>MEP方法</h4><p>假设训练集的类别总数为k，对于书中的当前非叶子结点t，所包含的样本数$$N(t)$$，属于主导类i的样本个数为$$N_{i}(t)$$，不属于主导类的样本数为$$E(t)$$，显然$$E(t)=N(t)-N_{i}(t)$$。结点t中某一样本实例属于类i的期望概率为</p>
+<p>$$P_{i}(t)=\frac{N_{i}(t)+P_{ki} * m}{N(t)+m} \tag{16}$$</p>
+<p>其中，$$P_{ki}$$表示第i类的先验概率，m是参数，用来设置先验概率在评估$$P_{i}(t)$$中的权值。如果当前结点t标示为类i的叶结点，那么分类误差期望概率为：</p>
+<p>$$EER(t)=\min {1-P_{i}(t)}=\min {\frac{N(t)-N_{i}(t)+m \cdot (1-P_{ki})}{N(t)+m}} \tag{17}$$</p>
+<p>对于非叶结点t，假设t的子结点$$t_{1},t_{2},…,t_{m}$$，首先计算该结点t的误差，称为静态误差$$STE(t)$$，然后计算这m个分支的误差，并且加权求和，权值为每个分支拥有的训练样本比例。我们称加权后的误差为回溯误差$$DYE(t)$$。如果$$STE(t) \leq DYE(t)$$，则对结点t的子树进行修剪。</p>
+</div><div class="tags"><a href="/tags/决策树/">决策树</a></div><div class="post-nav"><a class="pre" href="/Python-References/">Python的引用和函数默认值是可变对象的问题</a><a class="next" href="/2015-12-1-Math-Rayleigh-Distribution/">瑞利分布</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://chaideblog.github.io"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/BigData/">BigData</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Deep-Learning/">Deep Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Probability-theroy/" style="font-size: 15px;">Probability theroy</a> <a href="/tags/Genetic-Algorithm/" style="font-size: 15px;">Genetic Algorithm</a> <a href="/tags/决策树/" style="font-size: 15px;">决策树</a> <a href="/tags/Python语法/" style="font-size: 15px;">Python语法</a> <a href="/tags/VPS/" style="font-size: 15px;">VPS</a> <a href="/tags/Convex-Optimize/" style="font-size: 15px;">Convex Optimize</a> <a href="/tags/Naive-Bayes/" style="font-size: 15px;">Naive Bayes</a> <a href="/tags/Sublime/" style="font-size: 15px;">Sublime</a> <a href="/tags/Random-Forests/" style="font-size: 15px;">Random Forests</a> <a href="/tags/集成学习/" style="font-size: 15px;">集成学习</a> <a href="/tags/Hadoop/" style="font-size: 15px;">Hadoop</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/FFT/" style="font-size: 15px;">FFT</a> <a href="/tags/Apache/" style="font-size: 15px;">Apache</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/SVM/" style="font-size: 15px;">SVM</a> <a href="/tags/SGD/" style="font-size: 15px;">SGD</a> <a href="/tags/BGD/" style="font-size: 15px;">BGD</a> <a href="/tags/MBGD/" style="font-size: 15px;">MBGD</a> <a href="/tags/SMO/" style="font-size: 15px;">SMO</a> <a href="/tags/标准化/" style="font-size: 15px;">标准化</a> <a href="/tags/回归/" style="font-size: 15px;">回归</a> <a href="/tags/CTR/" style="font-size: 15px;">CTR</a> <a href="/tags/LeetCode/" style="font-size: 15px;">LeetCode</a> <a href="/tags/LightGBM/" style="font-size: 15px;">LightGBM</a> <a href="/tags/RCNN/" style="font-size: 15px;">RCNN</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/Interview/" style="font-size: 15px;">Interview</a> <a href="/tags/LR/" style="font-size: 15px;">LR</a> <a href="/tags/FM-FFM/" style="font-size: 15px;">FM/FFM</a> <a href="/tags/Recommend-System/" style="font-size: 15px;">Recommend System</a> <a href="/tags/Natural-Language-Processing/" style="font-size: 15px;">Natural Language Processing</a> <a href="/tags/Recommendation/" style="font-size: 15px;">Recommendation</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019-5-5-Paper-TEM/">基于决策树的可解释嵌入推荐模型：TEM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-5-4-Transformer/">Transformer理解与Tensorflow代码阅读</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-28-Normalization/">深度学习中各种Normalization</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-22-recommend-system-1/">《推荐系统实战》读书笔记（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-4-6-toutiao-interview/">字节跳动广告算法团队实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-13-xiaomi-interview/">小米信息流推荐实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-3-8-sohu-interview/">搜狐推荐算法实习面试经历（Offer）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-27-CTR-LR-FM-FFM/">CTR系列（一）：LR、FM/FFM</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-2-21-ms-bing-interview/">微软Bing组算法（Game Over）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019-1-8-PriorityQueue/">【转】Java容器源码分析之PriorityQueue</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">CHAI' blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
